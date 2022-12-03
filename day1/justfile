@@ -1,0 +1,8 @@
+check:
+    cargo run -- input.txt
+
+test:
+    cargo test
+
+watch-tests:
+    cargo watch -x test
