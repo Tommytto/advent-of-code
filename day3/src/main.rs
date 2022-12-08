@@ -1,8 +1,9 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
+use itertools::Itertools;
 
 fn main() {
     println!("1 task response={}", get_priorities_sum("input"));
-    println!("2 task response={}", get_priorities_sum("input"));
+    println!("2 task response={}", get_elves_groups_priorities_sum("input"));
 }
 
 struct Symbol {
@@ -18,6 +19,38 @@ impl Symbol {
             (common_code - 38) as u8
         }
     }
+}
+
+fn get_elves_groups_priorities_sum(file_path: &str) -> u64 {
+    let content = read_file(file_path);
+    let lines = content.lines();
+    let mut peekable = lines.peekable();
+
+    let mut sum = 0;
+    while peekable.peek().is_some() {
+        let mut test = Vec::new();
+        for _ in 0..3 {
+            let chars = peekable.next().unwrap().chars();
+            test.push(chars);
+        }
+
+        let mut sets = test.into_iter().map(|iter| {
+            iter.fold(HashSet::new(), |mut res, ch| {
+                res.insert(ch);
+                res
+            })
+        });
+        let iter1 = sets.next().unwrap();
+        let iter2 = sets.next().unwrap();
+        let iter3 = sets.next().unwrap();
+
+        let common = iter1.into_iter().find(|i| {
+            return iter2.contains(i) && iter3.contains(i);
+        }).unwrap();
+        sum += Symbol{char: common}.get_code() as u64;
+    }
+
+    sum
 }
 
 fn get_priorities_sum(file_path: &str) -> u64 {
@@ -55,7 +88,17 @@ mod test {
     }
 
     #[test]
+    fn solution_2_test() {
+        assert_eq!(get_elves_groups_priorities_sum("input-test"), 70)
+    }
+
+    #[test]
     fn solution_1() {
         assert_eq!(get_priorities_sum("input"), 8252)
     }
+
+    fn solution_2() {
+        assert_eq!(get_elves_groups_priorities_sum("input"), 2828)
+    }
+
 }
