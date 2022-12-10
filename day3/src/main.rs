@@ -1,5 +1,4 @@
-use std::collections::{HashMap, HashSet};
-use itertools::Itertools;
+use std::collections::{HashSet};
 
 fn main() {
     println!("1 task response={}", get_priorities_sum("input"));
@@ -97,6 +96,7 @@ mod test {
         assert_eq!(get_priorities_sum("input"), 8252)
     }
 
+    #[test]
     fn solution_2() {
         assert_eq!(get_elves_groups_priorities_sum("input"), 2828)
     }
