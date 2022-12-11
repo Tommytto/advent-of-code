@@ -1,0 +1,8 @@
+check:
+    cargo run
+
+test:
+    cargo test
+
+watch-tests:
+    cargo watch -x test
